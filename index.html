@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IslandsHunt | Toronto Islands Scavenger Hunt</title>
+  <meta name="description" content="A self-guided scavenger hunt experience across the Toronto Islands for couples and small teams." />
+  <style>
+    :root{
+      --ink:#17312b;
+      --muted:#5f756d;
+      --cream:#fff8e8;
+      --sand:#f0dfbf;
+      --sage:#d7e3d2;
+      --green:#2f6f5e;
+      --green-dark:#1d4d40;
+      --coral:#e8906e;
+      --card:#fffdf6;
+      --line:rgba(23,49,43,.14);
+      --shadow:0 18px 48px rgba(31,48,42,.18);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--cream);color:var(--ink);line-height:1.55}
+    h1,h2,h3{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.035em;line-height:1.02;margin:0}
+    p{margin:0;color:var(--muted)}
+    a{color:inherit;text-decoration:none}
+    .nav{position:fixed;inset:0 0 auto 0;z-index:30;padding:14px 18px;background:linear-gradient(to bottom,rgba(12,32,29,.82),rgba(12,32,29,.18),transparent);color:white}
+    .nav-inner{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px}
+    .brand{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:1.3rem;letter-spacing:-.03em}.brand span{color:#ffcf8a}
+    .menu{display:flex;gap:16px;font-size:.9rem;opacity:.95}.menu a{padding:8px 2px}
+    .hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px;width:36px;height:36px}
+    .hamburger span{display:block;width:22px;height:2px;background:white;border-radius:2px;transition:all .25s}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .hamburger.open span:nth-child(2){opacity:0}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    @media(max-width:760px){
+      .hamburger{display:flex}
+      .menu{display:none;flex-direction:column;gap:0;position:absolute;top:100%;left:0;right:0;background:rgba(12,32,29,.97);padding:8px 18px 18px;opacity:1}
+      .menu.open{display:flex}
+      .menu a{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:.95rem}
+      .menu a:last-child{border-bottom:none}
+    }
+    .hero{min-height:96vh;position:relative;display:grid;align-items:end;padding:120px 20px 48px;overflow:hidden;background-image:linear-gradient(180deg,rgba(6,23,22,.1),rgba(6,23,22,.45)),url('static/background.png');background-position:center;background-size:cover;color:white}
+    .hero::after{content:"";position:absolute;left:-8%;right:-8%;bottom:-70px;height:150px;background:var(--cream);border-radius:50% 50% 0 0/55% 55% 0 0}
+    .hero-content{position:relative;z-index:2;max-width:1120px;margin:0 auto;width:100%;padding-bottom:52px}.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-weight:700;font-size:.74rem;color:#ffdfaa;margin-bottom:14px}.hero h1{font-size:clamp(3.9rem,13vw,8.6rem);text-shadow:0 12px 44px rgba(0,0,0,.3)}.hero p{max-width:680px;margin-top:18px;font-size:clamp(1.08rem,2.5vw,1.45rem);color:rgba(255,255,255,.9)}.cta{display:inline-flex;align-items:center;gap:10px;margin-top:28px;padding:15px 22px;border-radius:999px;background:#ffcf8a;color:#18332d;font-weight:800;box-shadow:0 12px 28px rgba(0,0,0,.22)}.cta:hover{transform:translateY(-1px)}
+    main{position:relative;z-index:3}.section{padding:72px 20px}.wrap{max-width:1120px;margin:0 auto}.intro{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:start}.label{display:inline-block;margin-bottom:14px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--green-dark);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em}.section h2{font-size:clamp(2.2rem,6vw,4.4rem);color:var(--ink);margin-bottom:18px}.lead{font-size:1.12rem}.photo-card{position:relative;min-height:320px;border-radius:32px;overflow:hidden;box-shadow:var(--shadow);background:var(--sage)}.photo-card img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}.photo-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:28px;text-align:center}.photo-placeholder p{font-size:.88rem;color:var(--green-dark);font-weight:600;line-height:1.6;opacity:.7}
+    .expect{background:linear-gradient(180deg,var(--cream),#edf4e9)}.cards{display:grid;gap:20px;margin-top:28px;max-width:720px;margin-left:auto;margin-right:auto}.card{background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:0 10px 28px rgba(31,48,42,.07)}.cards .card{display:flex;flex-direction:row-reverse;align-items:stretch;overflow:hidden;padding:0}.card-photo{flex:0 0 38%;max-width:360px;padding:14px 14px 14px 0}.card-photo img{width:100%;height:100%;object-fit:cover;display:block;border-radius:16px}.card-body{flex:1;padding:28px}.card-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}.card-head .icon{margin-bottom:0;flex-shrink:0}.card-head h3{margin:0;font-size:1.25rem}.icon{width:42px;height:42px;border-radius:16px;background:var(--sage);display:grid;place-items:center;font-weight:900;color:var(--green-dark);font-size:.82rem;flex-shrink:0}.bring-wear .card{padding:24px}
+    .bring-wear{display:grid;grid-template-columns:1fr 1fr;gap:18px}.bring-wear .card h2{font-size:clamp(1.3rem,2.5vw,1.75rem);line-height:1.15;margin-bottom:10px}.list{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:12px}.list li{display:flex;gap:11px;align-items:flex-start;color:var(--muted)}.check{flex:0 0 22px;width:22px;height:22px;border-radius:50%;background:var(--green);color:white;display:grid;place-items:center;font-size:.78rem;font-weight:900;margin-top:1px}
+    .story-strip{padding:0 20px 76px}.strip{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.strip img{width:100%;height:240px;object-fit:cover;border-radius:24px}
+    .proof{background:var(--sand);padding:52px 20px}
+    .proof-wrap{max-width:860px;margin:0 auto}
+    .proof-stats{display:flex;justify-content:center;gap:48px;margin-bottom:36px}
+    .proof-stat{text-align:center}.stat-num{display:block;font-family:Georgia,"Times New Roman",serif;font-size:2.8rem;letter-spacing:-.04em;color:var(--green-dark);line-height:1}.stat-label{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.11em;color:var(--muted);margin-top:5px}
+    .carousel{position:relative}
+    .carousel-slide{display:none;animation:reviewFade .5s ease}
+    .carousel-slide.active{display:block}
+    @keyframes reviewFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .review-text{font-family:Georgia,"Times New Roman",serif;font-size:1.18rem;color:var(--ink);font-style:italic;line-height:1.6;text-align:center;max-width:640px;margin:0 auto}
+    .review-cite{display:block;margin-top:14px;font-style:normal;font-size:.82rem;color:var(--muted);font-family:Inter,sans-serif;letter-spacing:.04em;text-align:center;text-transform:uppercase}
+    .carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:24px}
+    .carousel-dots button{width:8px;height:8px;border-radius:50%;border:none;background:rgba(23,49,43,.2);padding:0;cursor:pointer;transition:background .2s}
+    .carousel-dots button.active{background:var(--green-dark)}
+    .how{background:#17312b;color:white}.how h2,.how h3{color:white}.how p{color:rgba(255,255,255,.74)}.steps{display:grid;gap:14px;margin-top:28px}.step{display:grid;grid-template-columns:58px 1fr;gap:18px;align-items:start;padding:18px;border:1px solid rgba(255,255,255,.14);border-radius:22px;background:rgba(255,255,255,.055)}.num{width:48px;height:48px;border-radius:18px;background:#ffcf8a;color:#17312b;display:grid;place-items:center;font-weight:900}.step h3{font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:1.05rem;letter-spacing:0;margin-bottom:4px}
+    .when{background:linear-gradient(160deg,var(--green-dark),#2a5c4e);color:white}.when h2{color:white;font-size:clamp(2.6rem,8vw,5.2rem)}.when .label{color:#ffcf8a;border-color:rgba(255,207,138,.3)}.when .lead{color:rgba(255,255,255,.8);margin-top:14px}.when-details{display:flex;align-items:center;flex-wrap:wrap;margin-top:36px;background:rgba(255,255,255,.09);border-radius:22px;padding:22px 28px;gap:0}.when-item{flex:1;min-width:140px;padding:10px 16px}.when-item strong{display:block;color:white;font-family:Georgia,serif;font-size:1.2rem;letter-spacing:-.02em;margin-bottom:4px}.when-item span{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.13em;color:rgba(255,255,255,.5)}.when-divider{width:1px;height:36px;background:rgba(255,255,255,.18);flex-shrink:0}
+    @media(max-width:760px){.when-divider{display:none}.when-item{min-width:calc(50% - 32px)}}
+    .pricing{background:linear-gradient(180deg,#17312b 0,#17312b 26%,var(--cream) 26%)}.price-card{max-width:720px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:34px;padding:30px;box-shadow:var(--shadow)}.price-card h2{font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.15}.price-head{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:22px}.price{font-family:Georgia,"Times New Roman",serif;font-size:3.4rem;letter-spacing:-.05em;color:var(--green-dark);white-space:nowrap}.small{font-size:.86rem;color:var(--muted)}.pill{display:inline-block;margin-top:12px;background:var(--sage);color:var(--green-dark);padding:8px 12px;border-radius:999px;font-weight:800;font-size:.84rem}.form{margin-top:22px;display:grid;gap:12px}.form label{font-weight:900}.form-row{display:flex;gap:10px}.form input{flex:1;min-width:0;border:1px solid var(--line);border-radius:16px;padding:15px 14px;font:inherit;background:white;color:var(--ink)}.form button{border:0;border-radius:16px;padding:15px 18px;background:var(--green);color:white;font-weight:900;cursor:pointer}.thanks{display:none;margin-top:22px;border-radius:22px;background:#e8f2df;border:1px solid rgba(47,111,94,.2);padding:18px;color:var(--green-dark);font-weight:800}.footer{padding:34px 20px;background:#10241f;color:rgba(255,255,255,.74)}.footer .wrap{display:flex;justify-content:space-between;gap:20px;align-items:center}.footer strong{font-family:Georgia,"Times New Roman",serif;color:white;font-size:1.2rem}
+    @media (max-width:760px){.hero{min-height:92vh;padding:110px 16px 36px;background-position:center}.hero h1{font-size:4.25rem}.section{padding:56px 16px}.intro,.bring-wear{grid-template-columns:1fr}.photo-card{min-height:310px}.cards .card{flex-direction:column-reverse}.card-photo{max-width:100%;height:auto;padding:0 14px 14px 14px}.card-photo img{height:auto}.proof-stats{gap:28px}.review-text{font-size:1rem}.price-head{display:block}.price{margin-top:12px;font-size:3.1rem}.form-row{display:grid}.footer .wrap{display:block}.footer p{margin-top:8px}.card-body{padding:20px}.bring-wear .card{padding:21px}}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top">Islands<span>Hunt</span></a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="menu" id="navMenu" aria-label="Page navigation">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#bring" class="nav-link">Before you go</a>
+        <a href="#when" class="nav-link">When</a>
+        <a href="#works" class="nav-link">How it works</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+      </div>
+    </div>
+  </nav>
+  <header class="hero" id="top">
+    <div class="hero-content">
+      <div class="eyebrow">Toronto Islands · self-guided adventure</div>
+      <h1>Islands<span style="color:#ffcf8a">Hunt</span></h1>
+      <p>Discover Toronto Islands the way most visitors never do.</p>
+      <a class="cta" href="#pricing">Join the Hunt →</a>
+    </div>
+  </header>
+  <main>
+    <section class="section" id="about">
+      <div class="wrap">
+        <span class="label">What is IslandsHunt?</span>
+        <h2>Adventure through the islands</h2>
+        <div class="intro" style="margin-top:28px">
+          <p class="lead">IslandsHunt is a self-guided scavenger hunt for small teams of 2–4 people. You unlock missions on the go — each one rooted in a real experience, a local detail, or an unexpected moment somewhere on the islands. No tour guide. No fixed schedule. Just you with your teammates, and an adventure that you will remember.</p>
+          <div class="photo-card">
+            <img src="static/intro.png" alt="IslandsHunt experience" />
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section expect" id="expect">
+      <div class="wrap">
+        <span class="label">What to expect</span>
+        <h2>Missions worth showing up for</h2>
+        <p class="lead">Every mission takes you somewhere specific and asks you to engage with it — really engage. You'll cross parts of the islands most people skip, see the skyline from angles you didn't know existed, and pick up pieces of local knowledge along the way. Quiet paths, changing views, and small discoveries turn a familiar island visit into a day you'll actually remember. By the time you're done, you'll know the islands from an angle most people never do.</p>
+        <div class="cards">
+          <article class="card img-right">
+            <div class="card-photo"><img src="static/spots_b.png" alt="Toronto Islands" /></div>
+            <div class="card-body">
+              <div class="card-head"><div class="icon">01</div><h3>Experience-based missions</h3></div>
+              <p>Every mission is built around something real — an experience, a place, a view or a local detail. You're not just finding things; you're doing things.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-photo"><img src="static/spots_a.jpg" alt="Toronto Islands" /></div>
+            <div class="card-body">
+              <div class="card-head"><div class="icon">02</div><h3>Unlock as you go</h3></div>
+              <p>Missions reveal themselves one at a time, keeping the day surprising. Submit text, a photo or video of you doing it to complete the mission.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-photo"><img src="static/spots_c.png" alt="Toronto Islands" /></div>
+            <div class="card-body">
+              <div class="card-head"><div class="icon">03</div><h3>Earn points, win prizes</h3></div>
+              <p>Every completed mission scores your team points. We review your submissions and may reward you with extra points for creativity. Top teams are eligible for prizes from our local partners.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="proof" aria-label="Reviews">
+      <div class="proof-wrap">
+        <div class="proof-stats">
+          <div class="proof-stat">
+            <span class="stat-num">340+</span>
+            <span class="stat-label">Teams have played</span>
+          </div>
+          <div class="proof-stat">
+            <span class="stat-num">4.9 ★</span>
+            <span class="stat-label">Average team rating</span>
+          </div>
+        </div>
+        <div class="carousel" id="reviewCarousel">
+          <div class="carousel-slide active">
+            <p class="review-text">"We'd walked those islands a dozen times. This was the first time we actually saw them."</p>
+            <cite class="review-cite">Anna &amp; James, Toronto</cite>
+          </div>
+          <div class="carousel-slide">
+            <p class="review-text">"Honestly one of the best ways we've spent a Saturday. The missions surprised us every single time."</p>
+            <cite class="review-cite">Marcus &amp; Priya, Toronto</cite>
+          </div>
+          <div class="carousel-slide">
+            <p class="review-text">"We did it as a group of four and it was the perfect amount of competitive. Zero boring moments."</p>
+            <cite class="review-cite">The Okafor Group, Scarborough</cite>
+          </div>
+          <div class="carousel-slide">
+            <p class="review-text">"The highlight video they sent after was such a nice touch. Didn't expect it to be that good."</p>
+            <cite class="review-cite">Sophie &amp; Tom, North York</cite>
+          </div>
+          <div class="carousel-slide">
+            <p class="review-text">"We thought we knew the islands well. We were wrong — in the best possible way."</p>
+            <cite class="review-cite">Dev &amp; Kezia, Toronto</cite>
+          </div>
+        </div>
+        <div class="carousel-dots" id="carouselDots"></div>
+      </div>
+    </section>
+    <section class="section" id="bring">
+      <div class="wrap">
+        <span class="label">Before you go</span>
+        <h2>Show up ready</h2>
+        <div class="bring-wear" style="margin-top:28px">
+          <article class="card">
+            <span class="label">What to bring</span>
+            <h2>Pack light, but come ready</h2>
+            <ul class="list">
+              <li><span class="check">✓</span><span>A fully charged phone for the app, photos, and videos.</span></li>
+              <li><span class="check">✓</span><span>Your teammates — you'll need them.</span></li>
+              <li><span class="check">✓</span><span>A small phone tripod — missions include hands-free video and wide shots.</span></li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="label">What to wear</span>
+            <h2>Dress like you mean it</h2>
+            <p>It's not a workout, you'll be just walking and biking. So dress for a nice day out. IslandsHunt creates a highlights video from your team's photos and video submissions, so choose something you'll be happy to see yourself in.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section when" id="when">
+      <div class="wrap">
+        <span class="label">Next adventure</span>
+        <h2>Starting soon</h2>
+        <p class="lead">Spots are limited — sign up below, choose your timeslot and we'll send you further instructions.</p>
+        <div class="when-details">
+          <div class="when-item"><strong>Friday, May 29th</strong><span>Date</span></div>
+          <div class="when-divider"></div>
+          <div class="when-item"><strong>5:00 – 7:00 PM</strong><span>Starting time</span></div>
+          <div class="when-divider"></div>
+          <div class="when-item"><strong>Centre Island</strong><span>Starting point</span></div>
+          <div class="when-divider"></div>
+          <div class="when-item"><strong>2–4 people</strong><span>Team size</span></div>
+          <div class="when-divider"></div>
+          <div class="when-item"><strong>~90 minutes</strong><span>Duration</span></div>
+        </div>
+        <p class="small" style="margin-top:18px;color:rgba(255,255,255,.45)">Seasonal availability · Toronto Islands · Spring through Fall</p>
+      </div>
+    </section>
+    <section class="section how" id="works">
+      <div class="wrap">
+        <span class="label" style="color:#ffcf8a;border-color:rgba(255,255,255,.2)">How it works</span>
+        <h2>Five simple steps</h2>
+        <div class="steps">
+          <div class="step"><div class="num">1</div><div><h3>Sign up with your email</h3><p>Reserve your team spot and we'll email you payment instructions, available time slots for your team, and a code to unlock the experience.</p></div></div>
+          <div class="step"><div class="num">2</div><div><h3>Arrive at the starting point</h3><p>Follow the instructions from your confirmation email. Arrive at the starting point at your assigned time — your adventure begins at Centre Island.</p></div></div>
+          <div class="step"><div class="num">3</div><div><h3>Complete missions, earn points</h3><p>Missions unlock as you go — read each one carefully and be creative for maximum reward!</p></div></div>
+          <div class="step"><div class="num">4</div><div><h3>Win prizes</h3><p>The more points your team earns, the higher your chances of winning a prize from our local partners. So bring your best effort.</p></div></div>
+          <div class="step"><div class="num">5</div><div><h3>Get your highlight video</h3><p>After the adventure we'll put together a personal highlight video from your team's photo and video submissions and send it to you.</p></div></div>
+        </div>
+      </div>
+    </section>
+    <section class="section pricing" id="pricing">
+      <div class="wrap">
+        <div class="price-card">
+          <div class="price-head">
+            <div>
+              <span class="label">Reserve your spot</span>
+              <h2>One price for the whole team</h2>
+              <p style="margin-top:10px">Covers your full team of 2–4 people — no per-person checkout.</p>
+            </div>
+            <div class="price">$29.99</div>
+          </div>
+          <form class="form" id="signupForm">
+            <label for="email">Sign up and get your join instructions</label>
+            <p>Enter your email and we'll send you payment instructions, time slots and a private join code.</p>
+            <div class="form-row">
+              <input id="email" type="email" placeholder="you@example.com" required />
+              <button type="submit">Sign me up!</button>
+            </div>
+          </form>
+          <div class="thanks" id="thanksMessage">You're on the list! We'll email you your join code and everything you need before your visit.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="wrap">
+      <strong>IslandsHunt</strong>
+      <p>Toronto Islands · Seasonal experience · Powered by Goosechase · info@islandshunt.ca</p>
+    </div>
+  </footer>
+  <script>
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+    hamburger.addEventListener('click', function(){
+      hamburger.classList.toggle('open');
+      navMenu.classList.toggle('open');
+    });
+    navMenu.querySelectorAll('a').forEach(function(link){
+      link.addEventListener('click', function(){
+        hamburger.classList.remove('open');
+        navMenu.classList.remove('open');
+      });
+    });
+
+    // Form submit
+    const form = document.getElementById('signupForm');
+    const thanks = document.getElementById('thanksMessage');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      form.style.display = 'none';
+      thanks.style.display = 'block';
+    });
+
+    // Review carousel
+    (function(){
+      const slides = document.querySelectorAll('#reviewCarousel .carousel-slide');
+      const dotsContainer = document.getElementById('carouselDots');
+      let current = 0;
+
+      slides.forEach(function(_, i){
+        const btn = document.createElement('button');
+        btn.setAttribute('aria-label', 'Review ' + (i + 1));
+        if(i === 0) btn.classList.add('active');
+        btn.addEventListener('click', function(){ goTo(i); });
+        dotsContainer.appendChild(btn);
+      });
+
+      function goTo(n){
+        slides[current].classList.remove('active');
+        dotsContainer.children[current].classList.remove('active');
+        current = (n + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dotsContainer.children[current].classList.add('active');
+      }
+
+      setInterval(function(){ goTo(current + 1); }, 4500);
+    })();
+  </script>
+</body>
+</html>
